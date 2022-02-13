@@ -8,7 +8,7 @@ stages:
 deploy:
   stage: deploy
   only:
-    - /^release-.*$/
+    - /^v.*$/
   except:
     - branches
   before_script:
