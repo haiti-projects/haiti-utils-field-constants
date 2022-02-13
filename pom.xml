@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>dev.struchkov.haiti</groupId>
+        <artifactId>haiti</artifactId>
+        <version>0.0.4</version>
+    </parent>
+
+    <groupId>dev.struchkov.haiti.utils</groupId>
+    <artifactId>haiti-utils-field-constants</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>Haiti Field Name Constants Utils</name>
+    <description>Generating class field names</description>
+    <url>https://github.com/haiti-projects/haiti-utils-field-constants</url>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/haiti-projects/haiti-utils-field-constants/issues</url>
+    </issueManagement>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>dev.struchkov.haiti</groupId>
+            <artifactId>haiti-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>1.0.1</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <scm>
+        <connection>scm:git:https://github.com/haiti-projects/haiti-utils-field-constants.git</connection>
+        <url>https://github.com/haiti-projects/haiti-utils-field-constants</url>
+        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-utils-field-constants.git</developerConnection>
+    </scm>
+
+</project>
