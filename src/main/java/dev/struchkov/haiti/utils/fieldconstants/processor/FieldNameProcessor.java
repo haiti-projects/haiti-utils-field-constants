@@ -6,6 +6,7 @@ import dev.struchkov.haiti.utils.fieldconstants.annotation.FieldNames;
 import dev.struchkov.haiti.utils.fieldconstants.annotation.field.ElementCollectionField;
 import dev.struchkov.haiti.utils.fieldconstants.annotation.field.IgnoreField;
 import dev.struchkov.haiti.utils.fieldconstants.annotation.field.JoinField;
+import dev.struchkov.haiti.utils.fieldconstants.annotation.setting.TableModeSettings;
 import dev.struchkov.haiti.utils.fieldconstants.domain.Mode;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.ClassTableDto;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinElemCollectionDto;
@@ -26,6 +27,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -47,14 +49,15 @@ public class FieldNameProcessor extends AbstractProcessor {
 
                 final Set<Mode> modes = Arrays.stream(settings.mode()).collect(Collectors.toUnmodifiableSet());
                 if (modes.contains(Mode.TABLE)) {
-                    generateTableMode(annotatedElement, mirror, annotatedElementName);
+                    final TableModeSettings tableSettings = settings.tableSettings();
+                    generateTableMode(tableSettings, annotatedElement, mirror, annotatedElementName);
                 }
             }
         }
         return true;
     }
 
-    private void generateTableMode(Element annotatedElement, TypeMirror mirror, String annotatedElementName) {
+    private void generateTableMode(TableModeSettings tableSettings, Element annotatedElement, TypeMirror mirror, String annotatedElementName) {
         final Table anTable = annotatedElement.getAnnotation(Table.class);
         final String newClassName = annotatedElementName + Mode.TABLE.getDefaultPostfix();
 
@@ -63,7 +66,7 @@ public class FieldNameProcessor extends AbstractProcessor {
                 .filter(this::isNotIgnoreField)
                 .collect(Collectors.toList());
 
-        final List<SimpleFieldTableDto> simpleFields = getSimpleFields(allFields);
+        final List<SimpleFieldTableDto> simpleFields = getSimpleFields(allFields, anTable, tableSettings);
         final List<JoinFieldDto> joinFields = getJoinFields(allFields);
         final List<JoinElemCollectionDto> elementCollectionFields = getElementCollectionsFields(allFields);
 
@@ -111,19 +114,26 @@ public class FieldNameProcessor extends AbstractProcessor {
                 .collect(Collectors.toList());
     }
 
-    private List<SimpleFieldTableDto> getSimpleFields(List<? extends Element> allFields) {
-        return allFields.stream()
+    private List<SimpleFieldTableDto> getSimpleFields(List<? extends Element> allFields, Table anTable, TableModeSettings tableSettings) {
+        final boolean prefixTableForColumn = tableSettings.prefixTableForColumn();
+        final List<SimpleFieldTableDto> resultList = new ArrayList<>();
+        allFields.stream()
                 .filter(
                         field -> field.getAnnotation(Column.class) != null &&
                                 field.getAnnotation(ElementCollection.class) == null
                 )
-                .map(
+                .forEach(
                         field -> {
                             final String fieldName = field.getSimpleName().toString();
                             final String columnName = field.getAnnotation(Column.class).name();
-                            return SimpleFieldTableDto.of(fieldName, columnName);
+                            if (prefixTableForColumn) {
+                                final String tableNameAndColumnName = anTable.name() + "." + columnName;
+                                resultList.add(SimpleFieldTableDto.of("t_" + fieldName, tableNameAndColumnName));
+                            }
+                            resultList.add(SimpleFieldTableDto.of(fieldName, columnName));
                         }
-                ).collect(Collectors.toList());
+                );
+        return resultList;
     }
 
     private boolean isNotIgnoreField(Element element) {

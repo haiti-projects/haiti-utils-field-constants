@@ -1,5 +1,6 @@
 package dev.struchkov.haiti.utils.fieldconstants.annotation;
 
+import dev.struchkov.haiti.utils.fieldconstants.annotation.setting.TableModeSettings;
 import dev.struchkov.haiti.utils.fieldconstants.domain.Mode;
 
 import java.lang.annotation.ElementType;
@@ -12,5 +13,7 @@ import java.lang.annotation.Target;
 public @interface FieldNames {
 
     Mode[] mode() default {Mode.SIMPLE};
+
+    TableModeSettings tableSettings() default @TableModeSettings(prefixTableForColumn = false);
 
 }
