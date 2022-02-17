@@ -1,5 +1,7 @@
 package dev.struchkov.haiti.utils.fieldconstants.annotation;
 
+import dev.struchkov.haiti.utils.fieldconstants.domain.Mode;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,6 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface FieldNames {
 
-    String postfix() default "Fields";
+    Mode[] mode() default {Mode.SIMPLE};
 
 }

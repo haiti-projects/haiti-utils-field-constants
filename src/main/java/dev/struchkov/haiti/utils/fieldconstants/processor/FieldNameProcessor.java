@@ -1,11 +1,17 @@
 package dev.struchkov.haiti.utils.fieldconstants.processor;
 
 import com.google.auto.service.AutoService;
-import dev.struchkov.haiti.utils.fieldconstants.ClassCreator;
+import dev.struchkov.haiti.utils.fieldconstants.CreatorClassTableMode;
 import dev.struchkov.haiti.utils.fieldconstants.annotation.FieldNames;
-import dev.struchkov.haiti.utils.fieldconstants.annotation.IgnoreField;
-import dev.struchkov.haiti.utils.fieldconstants.domain.ClassDto;
-import dev.struchkov.haiti.utils.fieldconstants.domain.FieldDto;
+import dev.struchkov.haiti.utils.fieldconstants.annotation.field.ElementCollectionField;
+import dev.struchkov.haiti.utils.fieldconstants.annotation.field.IgnoreField;
+import dev.struchkov.haiti.utils.fieldconstants.annotation.field.JoinField;
+import dev.struchkov.haiti.utils.fieldconstants.domain.Mode;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.ClassTableDto;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinElemCollectionDto;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinFieldDto;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinTableContainer;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.SimpleFieldTableDto;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Processor;
@@ -16,9 +22,12 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Table;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,29 +44,86 @@ public class FieldNameProcessor extends AbstractProcessor {
                 final TypeMirror mirror = annotatedElement.asType();
                 final String annotatedElementName = annotatedElement.getSimpleName().toString();
                 final FieldNames settings = annotatedElement.getAnnotation(FieldNames.class);
-                final Table anTable = annotatedElement.getAnnotation(Table.class);
-                final String newClassName = annotatedElementName + settings.postfix();
 
-                final Set<FieldDto> fields = annotatedElement.getEnclosedElements().stream()
-                        .filter(this::isField)
-                        .filter(this::isNotIgnoreField)
-                        .map(
-                                element -> {
-                                    final String fieldName = element.getSimpleName().toString();
-                                    final String columnName = element.getAnnotation(Column.class).name();
-                                    return FieldDto.of(fieldName, columnName);
-                                }
-                        ).collect(Collectors.toSet());
-
-                final ClassDto newClass = new ClassDto();
-                newClass.setClassName(newClassName);
-                newClass.setFields(fields);
-                newClass.setClassPackage(getPackage(mirror));
-                newClass.setTableName(anTable.name());
-                ClassCreator.record(newClass, processingEnv);
+                final Set<Mode> modes = Arrays.stream(settings.mode()).collect(Collectors.toUnmodifiableSet());
+                if (modes.contains(Mode.TABLE)) {
+                    generateTableMode(annotatedElement, mirror, annotatedElementName);
+                }
             }
         }
         return true;
+    }
+
+    private void generateTableMode(Element annotatedElement, TypeMirror mirror, String annotatedElementName) {
+        final Table anTable = annotatedElement.getAnnotation(Table.class);
+        final String newClassName = annotatedElementName + Mode.TABLE.getDefaultPostfix();
+
+        final List<? extends Element> allFields = annotatedElement.getEnclosedElements().stream()
+                .filter(this::isField)
+                .filter(this::isNotIgnoreField)
+                .collect(Collectors.toList());
+
+        final List<SimpleFieldTableDto> simpleFields = getSimpleFields(allFields);
+        final List<JoinFieldDto> joinFields = getJoinFields(allFields);
+        final List<JoinElemCollectionDto> elementCollectionFields = getElementCollectionsFields(allFields);
+
+        final ClassTableDto newClass = new ClassTableDto();
+        newClass.setClassName(newClassName);
+        newClass.setSimpleFields(simpleFields);
+        newClass.setJoinFields(joinFields);
+        newClass.setJoinElemCollections(elementCollectionFields);
+        newClass.setClassPackage(getPackage(mirror));
+        newClass.setTableName(anTable.name());
+        CreatorClassTableMode.record(newClass, processingEnv);
+    }
+
+    private List<JoinElemCollectionDto> getElementCollectionsFields(List<? extends Element> allFields) {
+        return allFields.stream()
+                .filter(
+                        field -> field.getAnnotation(ElementCollectionField.class) != null &&
+                                field.getAnnotation(CollectionTable.class) != null &&
+                                field.getAnnotation(Column.class) != null
+                )
+                .map(field -> {
+                    final String fieldName = field.getSimpleName().toString();
+                    final ElementCollectionField elementCollectionField = field.getAnnotation(ElementCollectionField.class);
+                    final CollectionTable collectionTable = field.getAnnotation(CollectionTable.class);
+                    final Column column = field.getAnnotation(Column.class);
+
+                    final JoinTableContainer firstContainer = JoinTableContainer.of(collectionTable.name(), elementCollectionField.parentId(), collectionTable.joinColumns()[0].name());
+                    final JoinTableContainer secondContainer = JoinTableContainer.of(elementCollectionField.childTable(), column.name(), elementCollectionField.childReference());
+                    return JoinElemCollectionDto.of(fieldName, firstContainer, secondContainer);
+                }).collect(Collectors.toList());
+    }
+
+    private List<JoinFieldDto> getJoinFields(List<? extends Element> allFields) {
+        return allFields.stream()
+                .filter(
+                        field -> field.getAnnotation(JoinField.class) != null &&
+                                field.getAnnotation(ElementCollection.class) == null
+                )
+                .map(field -> {
+                    final String fieldName = field.getSimpleName().toString();
+                    final JoinField joinField = field.getAnnotation(JoinField.class);
+                    final JoinTableContainer joinContainer = JoinTableContainer.of(joinField.table(), joinField.baseId(), joinField.reference());
+                    return JoinFieldDto.of(fieldName, joinContainer);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private List<SimpleFieldTableDto> getSimpleFields(List<? extends Element> allFields) {
+        return allFields.stream()
+                .filter(
+                        field -> field.getAnnotation(Column.class) != null &&
+                                field.getAnnotation(ElementCollection.class) == null
+                )
+                .map(
+                        field -> {
+                            final String fieldName = field.getSimpleName().toString();
+                            final String columnName = field.getAnnotation(Column.class).name();
+                            return SimpleFieldTableDto.of(fieldName, columnName);
+                        }
+                ).collect(Collectors.toList());
     }
 
     private boolean isNotIgnoreField(Element element) {
