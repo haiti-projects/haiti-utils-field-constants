@@ -68,7 +68,7 @@ public class FieldNameProcessor extends AbstractProcessor {
 
         final List<SimpleFieldTableDto> simpleFields = getSimpleFields(allFields, anTable, tableSettings);
         final List<JoinFieldDto> joinFields = getJoinFields(allFields);
-        final List<JoinElemCollectionDto> elementCollectionFields = getElementCollectionsFields(allFields);
+        final List<JoinElemCollectionDto> elementCollectionFields = getElementCollectionsFields(anTable.name(), allFields);
 
         final ClassTableDto newClass = new ClassTableDto();
         newClass.setClassName(newClassName);
@@ -80,7 +80,7 @@ public class FieldNameProcessor extends AbstractProcessor {
         CreatorClassTableMode.record(newClass, processingEnv);
     }
 
-    private List<JoinElemCollectionDto> getElementCollectionsFields(List<? extends Element> allFields) {
+    private List<JoinElemCollectionDto> getElementCollectionsFields(String tableName, List<? extends Element> allFields) {
         return allFields.stream()
                 .filter(
                         field -> field.getAnnotation(ElementCollectionField.class) != null &&
@@ -93,7 +93,7 @@ public class FieldNameProcessor extends AbstractProcessor {
                     final CollectionTable collectionTable = field.getAnnotation(CollectionTable.class);
                     final Column column = field.getAnnotation(Column.class);
 
-                    final JoinTableContainer firstContainer = JoinTableContainer.of(collectionTable.name(), elementCollectionField.parentId(), collectionTable.joinColumns()[0].name());
+                    final JoinTableContainer firstContainer = JoinTableContainer.of(collectionTable.name(), tableName + "." + elementCollectionField.parentId(), collectionTable.joinColumns()[0].name());
                     final JoinTableContainer secondContainer = JoinTableContainer.of(elementCollectionField.childTable(), column.name(), elementCollectionField.childReference());
                     return JoinElemCollectionDto.of(fieldName, firstContainer, secondContainer);
                 }).collect(Collectors.toList());
