@@ -11,7 +11,7 @@
 
     <groupId>dev.struchkov.haiti.utils</groupId>
     <artifactId>haiti-utils-field-constants</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
 
     <name>Haiti Field Name Constants Utils</name>
     <description>Generating class field names</description>
