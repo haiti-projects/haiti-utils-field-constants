@@ -33,7 +33,7 @@ public final class CreatorClassTableMode {
     public static void record(ClassTableDto classDto, ProcessingEnvironment environment) {
         JavaFileObject builderFile = null;
         try {
-            builderFile = environment.getFiler().createSourceFile(classDto.getClassName());
+            builderFile = environment.getFiler().createSourceFile(classDto.getClassPackage() +"." + classDto.getClassName());
         } catch (IOException e) {
             e.printStackTrace();
         }
