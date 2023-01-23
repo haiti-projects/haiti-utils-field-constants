@@ -6,12 +6,12 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti-dependencies</artifactId>
-        <version>2.0.0</version>
+        <version>2.4.0</version>
     </parent>
 
     <groupId>dev.struchkov.haiti.utils</groupId>
     <artifactId>haiti-utils-field-constants</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7-SNAPSHOT</version>
 
     <name>Haiti Field Name Constants Utils</name>
     <description>Generating class field names</description>
@@ -71,9 +71,9 @@
     </build>
 
     <scm>
-        <connection>scm:git:https://github.com/haiti-projects/haiti-utils-field-constants.git</connection>
-        <url>https://github.com/haiti-projects/haiti-utils-field-constants</url>
-        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-utils-field-constants.git</developerConnection>
+        <connection>scm:git:https://git.struchkov.dev/Haiti/haiti-utils-field-constants.git</connection>
+        <url>https://git.struchkov.dev/Haiti/haiti-utils-field-constants</url>
+        <developerConnection>scm:git:https://git.struchkov.dev/Haiti/haiti-utils-field-constants.git</developerConnection>
     </scm>
 
 </project>
