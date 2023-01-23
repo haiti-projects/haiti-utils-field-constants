@@ -9,7 +9,7 @@
 
     <groupId>dev.struchkov.haiti.utils</groupId>
     <artifactId>haiti-utils-field-constants</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8-SNAPSHOT</version>
 
     <name>Haiti Field Name Constants Utils</name>
     <description>Generating class field names</description>
@@ -72,7 +72,7 @@
         <connection>scm:git:https://git.struchkov.dev/Haiti/haiti-utils-field-constants.git</connection>
         <url>https://git.struchkov.dev/Haiti/haiti-utils-field-constants</url>
         <developerConnection>scm:git:https://git.struchkov.dev/Haiti/haiti-utils-field-constants.git</developerConnection>
-      <tag>v.0.0.7</tag>
+      <tag>HEAD</tag>
   </scm>
 
 </project>
