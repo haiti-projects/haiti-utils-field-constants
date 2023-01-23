@@ -7,6 +7,7 @@ public class ClassTableDto {
     private String classPackage;
     private String className;
     private String tableName;
+    private String tableSchema;
     private List<SimpleTableFieldDto> simpleFields;
     private List<JoinFieldDto> joinFields;
     private List<JoinElemCollectionDto> joinElemCollections;
@@ -33,6 +34,14 @@ public class ClassTableDto {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getTableSchema() {
+        return tableSchema;
+    }
+
+    public void setTableSchema(String tableSchema) {
+        this.tableSchema = tableSchema;
     }
 
     public List<SimpleTableFieldDto> getSimpleFields() {

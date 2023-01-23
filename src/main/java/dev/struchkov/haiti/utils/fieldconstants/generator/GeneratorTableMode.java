@@ -49,6 +49,7 @@ public class GeneratorTableMode {
         newClass.setJoinElemCollections(elementCollectionFields);
         newClass.setClassPackage(Generator.getPackage(annotatedElement));
         newClass.setTableName(checkNotNull(anTable) ? anTable.name() : null);
+        newClass.setTableSchema(checkNotNull(anTable) ? anTable.schema() : null);
         CreatorClassTableMode.record(newClass, processingEnv);
     }
 
@@ -57,8 +58,8 @@ public class GeneratorTableMode {
             return allFields.stream()
                     .filter(
                             field -> field.getAnnotation(ElementCollectionField.class) != null &&
-                                    field.getAnnotation(CollectionTable.class) != null &&
-                                    field.getAnnotation(Column.class) != null
+                                     field.getAnnotation(CollectionTable.class) != null &&
+                                     field.getAnnotation(Column.class) != null
                     )
                     .map(field -> {
                         final String fieldName = field.getSimpleName().toString();
@@ -78,7 +79,7 @@ public class GeneratorTableMode {
         return allFields.stream()
                 .filter(
                         field -> field.getAnnotation(JoinField.class) != null &&
-                                field.getAnnotation(ElementCollection.class) == null
+                                 field.getAnnotation(ElementCollection.class) == null
                 )
                 .map(field -> {
                     final String fieldName = field.getSimpleName().toString();
@@ -95,7 +96,7 @@ public class GeneratorTableMode {
         allFields.stream()
                 .filter(
                         field -> field.getAnnotation(Column.class) != null &&
-                                field.getAnnotation(ElementCollection.class) == null
+                                 field.getAnnotation(ElementCollection.class) == null
                 )
                 .forEach(
                         field -> {
