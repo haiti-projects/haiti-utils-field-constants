@@ -1,6 +1,6 @@
 package dev.struchkov.haiti.utils.fieldconstants.domain.mode.table;
 
-import dev.struchkov.haiti.utils.Assert;
+import dev.struchkov.haiti.utils.Inspector;
 
 public class JoinElemCollectionDto {
 
@@ -15,7 +15,7 @@ public class JoinElemCollectionDto {
     }
 
     public static JoinElemCollectionDto of(String fieldName, JoinTableContainer firstContainer, JoinTableContainer secondContainer) {
-        Assert.isNotNull(fieldName, firstContainer, secondContainer);
+        Inspector.isNotNull(fieldName, firstContainer, secondContainer);
         return new JoinElemCollectionDto(fieldName, firstContainer, secondContainer);
     }
 

@@ -1,6 +1,6 @@
 package dev.struchkov.haiti.utils.fieldconstants.domain.mode.table;
 
-import dev.struchkov.haiti.utils.Assert;
+import dev.struchkov.haiti.utils.Inspector;
 
 public class JoinFieldDto {
 
@@ -13,7 +13,7 @@ public class JoinFieldDto {
     }
 
     public static JoinFieldDto of(String fieldName, JoinTableContainer container) {
-        Assert.isNotNull(fieldName, container);
+        Inspector.isNotNull(fieldName, container);
         return new JoinFieldDto(fieldName, container);
     }
 

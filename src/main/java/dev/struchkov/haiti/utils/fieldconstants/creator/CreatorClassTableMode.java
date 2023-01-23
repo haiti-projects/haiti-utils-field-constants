@@ -1,10 +1,11 @@
-package dev.struchkov.haiti.utils.fieldconstants;
+package dev.struchkov.haiti.utils.fieldconstants.creator;
 
+import dev.struchkov.haiti.utils.Checker;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.ClassTableDto;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinElemCollectionDto;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinFieldDto;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinTableContainer;
-import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.SimpleFieldTableDto;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.SimpleTableFieldDto;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.JavaFileObject;
@@ -13,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 
+import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 import static java.text.MessageFormat.format;
 
@@ -63,19 +65,21 @@ public final class CreatorClassTableMode {
         }
     }
 
-    private static void generateTableName(String tableName, Collection<SimpleFieldTableDto> fields, PrintWriter out) {
+    private static void generateTableName(String tableName, Collection<SimpleTableFieldDto> fields, PrintWriter out) {
         if (tableName != null) {
             final boolean isTableNameField = fields.stream().anyMatch(simpleFieldTableDto -> simpleFieldTableDto.getFieldStringName().equalsIgnoreCase(TABLE_NAME_DEFAULT));
             out.println(format("    public static final String {0} = \"{1}\";", isTableNameField ? TABLE_NAME_DB : TABLE_NAME_DEFAULT, tableName));
+            out.println();
         }
-        out.println();
     }
 
-    private static void generateSimpleNames(Collection<SimpleFieldTableDto> fields, PrintWriter out) {
-        for (SimpleFieldTableDto field : fields) {
+    private static void generateSimpleNames(Collection<SimpleTableFieldDto> fields, PrintWriter out) {
+        for (SimpleTableFieldDto field : fields) {
             out.println(format("    public static final String {0} = \"{1}\";", field.getFieldStringName(), field.getFieldName()));
         }
-        out.println();
+        if (checkNotEmpty(fields)) {
+            out.println();
+        }
     }
 
     private static void generateJoinNames(List<JoinFieldDto> joinFields, PrintWriter out) {
@@ -88,7 +92,9 @@ public final class CreatorClassTableMode {
                     )
             );
         }
-        out.println();
+        if (checkNotEmpty(joinFields)) {
+            out.println();
+        }
     }
 
     private static void generateElementCollectionNames(List<JoinElemCollectionDto> joinElemCollections, PrintWriter out) {
@@ -101,7 +107,9 @@ public final class CreatorClassTableMode {
             out.println(format("            JoinTable.ofLeft(\"{0}\", \"{1}\", \"{2}\")", secondContainer.getTable(), secondContainer.getBaseId(), secondContainer.getReference()));
             out.println("    };");
         }
-        out.println();
+        if (checkNotEmpty(joinElemCollections)) {
+            out.println();
+        }
     }
 
 }

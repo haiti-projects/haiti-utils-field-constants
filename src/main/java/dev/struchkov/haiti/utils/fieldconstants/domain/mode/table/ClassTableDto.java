@@ -7,7 +7,7 @@ public class ClassTableDto {
     private String classPackage;
     private String className;
     private String tableName;
-    private List<SimpleFieldTableDto> simpleFields;
+    private List<SimpleTableFieldDto> simpleFields;
     private List<JoinFieldDto> joinFields;
     private List<JoinElemCollectionDto> joinElemCollections;
 
@@ -35,11 +35,11 @@ public class ClassTableDto {
         this.tableName = tableName;
     }
 
-    public List<SimpleFieldTableDto> getSimpleFields() {
+    public List<SimpleTableFieldDto> getSimpleFields() {
         return simpleFields;
     }
 
-    public void setSimpleFields(List<SimpleFieldTableDto> simpleFields) {
+    public void setSimpleFields(List<SimpleTableFieldDto> simpleFields) {
         this.simpleFields = simpleFields;
     }
 

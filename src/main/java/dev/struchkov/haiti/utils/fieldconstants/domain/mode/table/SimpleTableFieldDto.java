@@ -5,18 +5,18 @@ package dev.struchkov.haiti.utils.fieldconstants.domain.mode.table;
  *
  * @author upagge 07.06.2021
  */
-public class SimpleFieldTableDto {
+public class SimpleTableFieldDto {
 
     private final String fieldStringName;
     private final String fieldName;
 
-    private SimpleFieldTableDto(String fieldStringName, String fieldName) {
+    private SimpleTableFieldDto(String fieldStringName, String fieldName) {
         this.fieldStringName = fieldStringName;
         this.fieldName = fieldName;
     }
 
-    public static SimpleFieldTableDto of(String fieldStringName, String fieldName) {
-        return new SimpleFieldTableDto(fieldStringName, fieldName);
+    public static SimpleTableFieldDto of(String fieldStringName, String fieldName) {
+        return new SimpleTableFieldDto(fieldStringName, fieldName);
     }
 
     public String getFieldStringName() {

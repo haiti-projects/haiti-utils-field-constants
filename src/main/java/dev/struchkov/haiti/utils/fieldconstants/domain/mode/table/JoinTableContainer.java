@@ -1,6 +1,6 @@
 package dev.struchkov.haiti.utils.fieldconstants.domain.mode.table;
 
-import dev.struchkov.haiti.utils.Assert;
+import dev.struchkov.haiti.utils.Inspector;
 
 public class JoinTableContainer {
 
@@ -15,7 +15,7 @@ public class JoinTableContainer {
     }
 
     public static JoinTableContainer of(String table, String baseId, String reference) {
-        Assert.isNotNull(table, baseId, reference);
+        Inspector.isNotNull(table, baseId, reference);
         return new JoinTableContainer(table, baseId, reference);
     }
 

@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
-        <artifactId>haiti</artifactId>
-        <version>0.0.4</version>
+        <artifactId>haiti-dependencies</artifactId>
+        <version>2.0.0</version>
     </parent>
 
     <groupId>dev.struchkov.haiti.utils</groupId>
     <artifactId>haiti-utils-field-constants</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6</version>
 
     <name>Haiti Field Name Constants Utils</name>
     <description>Generating class field names</description>
@@ -22,7 +22,7 @@
     </issueManagement>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
