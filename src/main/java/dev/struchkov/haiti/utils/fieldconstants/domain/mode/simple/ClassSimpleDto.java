@@ -5,8 +5,8 @@ import java.util.List;
 public class ClassSimpleDto {
 
     private String classPackage;
-    private String className;
-    private String tableName;
+    private String newClassName;
+    private String oldClassName;
     private List<SimpleFieldDto> simpleFields;
 
     public String getClassPackage() {
@@ -17,20 +17,20 @@ public class ClassSimpleDto {
         this.classPackage = classPackage;
     }
 
-    public String getClassName() {
-        return className;
+    public String getNewClassName() {
+        return newClassName;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setNewClassName(String newClassName) {
+        this.newClassName = newClassName;
     }
 
-    public String getTableName() {
-        return tableName;
+    public String getOldClassName() {
+        return oldClassName;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setOldClassName(String oldClassName) {
+        this.oldClassName = oldClassName;
     }
 
     public List<SimpleFieldDto> getSimpleFields() {

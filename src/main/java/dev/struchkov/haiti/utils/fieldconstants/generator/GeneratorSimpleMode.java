@@ -14,9 +14,7 @@ import java.util.List;
 public class GeneratorSimpleMode {
 
     public static void generate(ProcessingEnvironment processingEnv, Element annotatedElement) {
-        final String annotatedElementName = annotatedElement.getSimpleName().toString();
-
-        final String newClassName = annotatedElementName + Mode.SIMPLE.getDefaultPostfix();
+        final String oldClassName = annotatedElement.getSimpleName().toString();
 
         final List<? extends Element> allFields = annotatedElement.getEnclosedElements().stream()
                 .filter(Generator::isField)
@@ -26,7 +24,8 @@ public class GeneratorSimpleMode {
         final List<SimpleFieldDto> simpleFields = getSimpleFields(allFields);
 
         final ClassSimpleDto newClass = new ClassSimpleDto();
-        newClass.setClassName(newClassName);
+        newClass.setNewClassName(oldClassName + Mode.SIMPLE.getDefaultPostfix());
+        newClass.setOldClassName(oldClassName);
         newClass.setSimpleFields(simpleFields);
         newClass.setClassPackage(Generator.getPackage(annotatedElement));
 

@@ -1,8 +1,7 @@
 package dev.struchkov.haiti.utils.fieldconstants.creator;
 
-import dev.struchkov.haiti.utils.fieldconstants.domain.mode.simple.SimpleFieldDto;
-import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.SimpleTableFieldDto;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.simple.ClassSimpleDto;
+import dev.struchkov.haiti.utils.fieldconstants.domain.mode.simple.SimpleFieldDto;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.JavaFileObject;
@@ -27,7 +26,7 @@ public final class CreatorClassSimpleMode {
     public static void record(ClassSimpleDto classDto, ProcessingEnvironment environment) {
         JavaFileObject builderFile = null;
         try {
-            builderFile = environment.getFiler().createSourceFile(classDto.getClassName());
+            builderFile = environment.getFiler().createSourceFile(classDto.getNewClassName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,8 +35,9 @@ public final class CreatorClassSimpleMode {
             out.println("package " + classDto.getClassPackage() + ";");
             out.println();
             out.println();
-            out.print(format("public class {0} '{'", classDto.getClassName()));
+            out.println(format("public class {0} '{'", classDto.getNewClassName()));
             out.println();
+            out.println(format("    public static final String CLASS_NAME = \"{0}\";", classDto.getOldClassName()));
             out.println();
             generateSimpleNames(classDto.getSimpleFields(), out);
             out.println("}");
