@@ -11,6 +11,8 @@ import javax.lang.model.element.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dev.struchkov.haiti.utils.fieldconstants.util.Generator.getPackage;
+
 public class GeneratorSimpleMode {
 
     public static void generate(ProcessingEnvironment processingEnv, Element annotatedElement) {
@@ -27,7 +29,7 @@ public class GeneratorSimpleMode {
         newClass.setNewClassName(oldClassName + Mode.SIMPLE.getDefaultPostfix());
         newClass.setOldClassName(oldClassName);
         newClass.setSimpleFields(simpleFields);
-        newClass.setClassPackage(Generator.getPackage(annotatedElement));
+        newClass.setClassPackage(getPackage(annotatedElement));
 
         CreatorClassSimpleMode.record(newClass, processingEnv);
     }
