@@ -38,7 +38,7 @@ public final class CreatorClassSimpleMode {
             out.println(format("public class {0} '{'", classDto.getNewClassName()));
             out.println();
             out.println(format("    public static final String CLASS_NAME = \"{0}\";", classDto.getOldClassName()));
-            out.println(format("    public static final String PACKAGE_AND_CLASS_NAME = \"{0}\";", classDto + classDto.getClassPackage() + "." + classDto.getOldClassName()));
+            out.println(format("    public static final String PACKAGE_AND_CLASS_NAME = \"{0}\";",  classDto.getClassPackage() + "." + classDto.getOldClassName()));
             out.println();
             generateSimpleNames(classDto.getSimpleFields(), out);
             out.println("}");
