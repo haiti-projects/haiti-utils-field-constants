@@ -6,6 +6,6 @@ module haiti.utils.fieldconstants {
 
     requires java.compiler;
     requires com.google.auto.service;
-    requires java.persistence;
+    requires jakarta.persistence;
     requires haiti.utils;
 }

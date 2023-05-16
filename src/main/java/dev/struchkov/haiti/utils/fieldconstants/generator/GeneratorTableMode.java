@@ -11,13 +11,13 @@ import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinFieldDto;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.JoinTableContainer;
 import dev.struchkov.haiti.utils.fieldconstants.domain.mode.table.SimpleTableFieldDto;
 import dev.struchkov.haiti.utils.fieldconstants.util.Generator;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Table;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

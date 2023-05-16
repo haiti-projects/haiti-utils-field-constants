@@ -4,12 +4,12 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti-dependencies</artifactId>
-        <version>2.7.2</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>dev.struchkov.haiti.utils</groupId>
     <artifactId>haiti-utils-field-constants</artifactId>
-    <version>0.0.12-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Haiti Field Name Constants Utils</name>
     <description>Generating class field names</description>
@@ -33,8 +33,8 @@
             <artifactId>haiti-utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.auto.service</groupId>
@@ -52,7 +52,7 @@
                         <path>
                             <groupId>com.google.auto.service</groupId>
                             <artifactId>auto-service</artifactId>
-                            <version>1.0.1</version>
+                            <version>${google.auto.service.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
