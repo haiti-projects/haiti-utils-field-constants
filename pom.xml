@@ -4,7 +4,7 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti-dependencies</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.2</version>
     </parent>
 
     <groupId>dev.struchkov.haiti.utils</groupId>
