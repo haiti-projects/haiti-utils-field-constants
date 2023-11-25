@@ -15,7 +15,7 @@ volumes:
 steps:
 
   - name: publish
-    image: maven:3.9-eclipse-temurin-17-alpine
+    image: maven:3.9-eclipse-temurin-21-alpine
     privileged: true
     volumes:
       - name: m2
@@ -44,7 +44,7 @@ volumes:
 steps:
 
   - name: publish maven central
-    image: maven:3.9-eclipse-temurin-17-alpine
+    image: maven:3.9-eclipse-temurin-21-alpine
     privileged: true
     volumes:
       - name: m2
@@ -80,7 +80,7 @@ volumes:
 steps:
 
   - name: publish struchkov nexus
-    image: maven:3.9-eclipse-temurin-17-alpine
+    image: maven:3.9-eclipse-temurin-21-alpine
     privileged: true
     volumes:
       - name: m2
@@ -100,6 +100,6 @@ steps:
       - mvn --settings maven-settings.xml -U -P ossrh,release-struchkov-nexus clean deploy
 ---
 kind: signature
-hmac: 4f46a8db7f63cc0cec9e91d01212852b0d70d8eb0f6dd2a3df457ea76c4b6762
+hmac: 54053652fcf007ed0aef0c401ecea7ef48e63c85d7e629ea69184f7dbe44079e
 
 ...
